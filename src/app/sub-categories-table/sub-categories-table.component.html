@@ -1,0 +1,89 @@
+<p-button (click)="visible = true" label="Add Sub Category" />
+
+<p-dialog
+  [header]="isUpdate ? 'Edit Sub Category' : 'Add Sub Category'"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '25rem' }"
+>
+  <div class="flex items-center mb-4">
+    <label for="subCategory" class="w-24 font-semibold">Sub Category</label>
+    <input
+      pInputText
+      id="subCategory"
+      class="flex-auto"
+      autocomplete="off"
+      [(ngModel)]="name"
+    />
+  </div>
+  <div class="flex justify-end">
+    <p-button
+      [disabled]="!name"
+      [label]="isUpdate ? 'Edit' : 'Add'"
+      (click)="isUpdate ? updateCategory() : addSubCategory()"
+    />
+  </div>
+</p-dialog>
+
+
+
+<p-dialog
+  [header]="'Add Expense'"
+  [modal]="true"
+  [(visible)]="Evisible"
+  [style]="{ width: '25rem' }"
+>
+  <div class="flex items-center mb-4">
+    <label for="Expense" class="w-24 font-semibold">Expense</label>
+    <input
+      pInputText
+      id="Expense"
+      class="flex-auto"
+      autocomplete="off"
+      type="number"
+      min="1"
+      [(ngModel)]="Expense"
+    />
+  </div>
+  <div class="flex justify-end">
+    <p-button
+      [disabled]="!Expense || Expense == 0"
+      [label]=" 'Add Expense'"
+      (click)="addExpense()"
+    />
+  </div>
+</p-dialog>
+
+<p-toast></p-toast>
+
+<p-table
+  [value]="products"
+  showGridlines
+  [tableStyle]="{ 'min-width': '50rem' }"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Sub Category</th>
+      <td>Add Expense</td>
+      <th>Total Expenses</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product>
+    <tr>
+      <td>{{ product.name }}</td>
+      <td (click)="showAddExpense(product.id)">
+        <i class="pi pi-plus" style="color: whitesmoke"></i>
+      </td>
+
+      <td>{{ product.totalExpenses }}</td>
+      <td style="cursor: pointer" (click)="openEditDialog(product.id)">
+        <i class="pi pi-pencil" style="color: blue"></i>
+      </td>
+      <td style="cursor: pointer" (click)="deleteCategory(product.id)">
+        <i class="pi pi-trash" style="color: red"></i>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

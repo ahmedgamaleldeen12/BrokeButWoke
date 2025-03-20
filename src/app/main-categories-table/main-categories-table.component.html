@@ -1,28 +1,61 @@
-<div class="card">
-  <p-table [value]="products" [tableStyle]="{'min-width': '60rem'}">
-      <ng-template #header>
-          <tr>
-              <th pSortableColumn="code" style="width:20%">
-                  Code <p-sortIcon field="code" />
-              </th>
-              <th pSortableColumn="name" style="width:20%">
-                  Name <p-sortIcon field="name" />
-              </th>
-              <th pSortableColumn="category" style="width:20%">
-                  Category <p-sortIcon field="category" />
-              </th>
-              <th pSortableColumn="quantity" style="width:20%">
-                  Quantity <p-sortIcon field="quantity" />
-              </th>
-          </tr>
-      </ng-template>
-      <ng-template #body let-product>
-          <tr>
-              <td>{{ product.code }}</td>
-              <td>{{ product.name }}</td>
-              <td>{{ product.category }}</td>
-              <td>{{ product.quantity }}</td>
-          </tr>
-      </ng-template>
-  </p-table>
-</div>
+<p-button (click)="visible = true" label="Add Main Category"></p-button>
+
+<p-dialog
+  [header]="isUpdate ? 'Edit Main Category' : 'Add Main Category'"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '25rem' }"
+>
+  <div class="flex items-center mb-4">
+    <label for="mainCategory" class="font-semibold w-24">Main Category</label>
+    <input
+      pInputText
+      id="mainCategory"
+      class="flex-auto"
+      autocomplete="off"
+      [(ngModel)]="name"
+    />
+  </div>
+  <div class="flex justify-end">
+    <p-button
+      [disabled]="!name"
+      [label]="isUpdate ? 'Edit' : 'Add'"
+      (click)="isUpdate ? updateCategory() : addMainCategory()"
+    ></p-button>
+  </div>
+</p-dialog>
+
+<p-toast></p-toast>
+
+<p-table
+  [value]="products"
+  showGridlines
+  [tableStyle]="{ 'min-width': '50rem' }"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Main Category</th>
+      <th>Total Expenses</th>
+      <th>Sub Categories</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product>
+    <tr>
+      <td>{{ product.name }}</td>
+      <td>{{ product.totalExpenses }}</td>
+      <td style="cursor: pointer">
+        <a [routerLink]="['/sub-category', product.id]">
+          <i class="pi pi-sitemap"></i>
+        </a>
+      </td>
+      <td style="cursor: pointer" (click)="openEditDialog(product.id)">
+        <i class="pi pi-pencil" style="color:blue"></i>
+      </td>
+      <td style="cursor: pointer"   (click)="deleteCategory(product.id)">
+        <i class="pi pi-trash" style="color:red"></i>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
